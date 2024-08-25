@@ -1,0 +1,6 @@
+{
+  "name": "iXmanager Integration (experimental)",
+  "country": "CZ",
+  "domains": ["number", "switch", "sensor"],
+  "homeassistant": "2024.2.1"
+}

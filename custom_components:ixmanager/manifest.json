@@ -1,0 +1,9 @@
+{
+  "domain": "ixmanager",
+  "name": "iXmanager Integration",
+  "version": "1.0.0",
+  "requirements": [],
+  "dependencies": [],
+  "codeowners": ["your_github_username"],
+  "config_flow": true
+}
