@@ -47,17 +47,17 @@ class WallboxChargingCurrent(NumberEntity):
         return self._state
 
     @property
-    def min_value(self):
+    def native_min_value(self) -> float:
         """Return the minimum value."""
         return self._min_value
 
     @property
-    def max_value(self):
+    def native_max_value(self) -> float:
         """Return the maximum value."""
         return self._max_value
 
     @property
-    def step(self):
+    def native_step(self) -> float:
         """Return the step value."""
         return self._step
 
