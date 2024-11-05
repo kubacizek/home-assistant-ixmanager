@@ -3,6 +3,7 @@ import requests
 from datetime import timedelta
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.helpers.entity import Entity
+from homeassistant.const import POWER_WATT, ENERGY_WATT_HOUR
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
         WallboxChargingEnableSensor(coordinator),
         WallboxMaximumCurrentSensor(coordinator),
         WallboxCurrentChargingPowerSensor(coordinator),
+        WallboxTotalEnergySensor(coordinator),
     ]
     async_add_entities(sensors, update_before_add=True)
 
@@ -32,7 +34,7 @@ class WallboxDataUpdateCoordinator:
 
     def update(self):
         headers = {"X-API-KEY": self._api_key}
-        url = f"https://evcharger.ixcommand.com/api/v1/thing/{self._controller_id}/properties?keys=chargingEnable&keys=maximumCurrent&keys=currentChargingPower"
+        url = f"https://evcharger.ixcommand.com/api/v1/thing/{self._controller_id}/properties?keys=chargingEnable&keys=maximumCurrent&keys=currentChargingPower&keys=totalEnergy"
 
         _LOGGER.debug(url)
         response = requests.get(url, headers=headers)
@@ -108,5 +110,37 @@ class WallboxCurrentChargingPowerSensor(WallboxSensorBase):
     def unique_id(self):
         return f"{self.coordinator._controller_id}_current_charging_power"
 
+    @property
+    def unit_of_measurement(self):
+        return POWER_WATT  
+
+    @property
+    def device_class(self):
+        return "power"
+
     def _update_state(self):
         self._state = self.coordinator.data.get("currentChargingPower")
+
+class WallboxTotalEnergySensor(WallboxSensorBase):
+    @property
+    def name(self):
+        return "Total Energy"
+
+    @property
+    def state(self):
+        return self._state
+
+    @property
+    def unique_id(self):
+        return f"{self.coordinator._controller_id}_total_energy"
+
+    @property
+    def unit_of_measurement(self):
+        return ENERGY_WATT_HOUR  
+
+    @property
+    def device_class(self):
+        return "energy"
+
+    def _update_state(self):
+        self._state = self.coordinator.data.get("totalEnergy")
