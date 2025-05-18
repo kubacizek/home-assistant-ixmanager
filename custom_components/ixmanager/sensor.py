@@ -3,7 +3,7 @@ import requests
 from datetime import timedelta
 from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.helpers.entity import Entity
-from homeassistant.const import POWER_WATT, ENERGY_WATT_HOUR
+from homeassistant.const import UnitOfPower, UnitOfEnergy
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -112,7 +112,7 @@ class WallboxCurrentChargingPowerSensor(WallboxSensorBase):
 
     @property
     def unit_of_measurement(self):
-        return POWER_WATT  
+        return UnitOfPower.WATT   
 
     @property
     def device_class(self):
@@ -136,7 +136,7 @@ class WallboxTotalEnergySensor(WallboxSensorBase):
 
     @property
     def unit_of_measurement(self):
-        return ENERGY_WATT_HOUR  
+        return UnitOfEnergy.WATT_HOUR  
 
     @property
     def device_class(self):
