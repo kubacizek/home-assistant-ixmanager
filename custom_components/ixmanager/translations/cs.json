@@ -1,0 +1,61 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Nastavení iXmanager",
+        "description": "Nakonfigurujte integraci iXmanager wallbox",
+        "data": {
+          "api_key": "API klíč",
+          "serial_number": "Sériové číslo",
+          "name": "Název",
+          "cable_type": "Typ nabíjecího kabelu"
+        },
+        "data_description": {
+          "api_key": "Váš iXmanager API klíč z nastavení účtu",
+          "serial_number": "Sériové číslo zařízení ve formátu XXX-XXX-XXX",
+          "name": "Zobrazovaný název pro toto zařízení",
+          "cable_type": "Vyberte maximální proud vašeho nabíjecího kabelu"
+        }
+      },
+      
+      "reauth_confirm": {
+        "title": "Znovu ověřit iXmanager",
+        "description": "Zadejte svůj API klíč pro znovu ověření",
+        "data": {
+          "api_key": "API klíč"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+      "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
+      "unknown": "[%key:common::config_flow::error::unknown%]"
+    },
+    "abort": {
+      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]",
+      "reauth_successful": "Znovu ověření bylo úspěšné"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Nastavit typ kabelu",
+        "description": "Aktualizujte typ kabelu pro správné omezení proudu",
+        "data": {
+          "cable_type": "Typ nabíjecího kabelu"
+        },
+        "data_description": {
+          "cable_type": "Vyberte maximální proud vašeho nabíjecího kabelu"
+        }
+      }
+    }
+  },
+  "selector": {
+    "cable_type": {
+      "options": {
+        "16A": "Kabel Type 2 (max 16A) - Standardní kabel",
+        "32A": "Kabel Type 2 (max 32A) - Výkonný kabel"
+      }
+    }
+  }
+}

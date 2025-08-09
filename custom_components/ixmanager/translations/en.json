@@ -1,20 +1,60 @@
 {
-    "config": {
-        "step": {
-            "user": {
-                "data": {
-                    "api_key": "API Key",
-                    "serial_number": "Serial Number in format XXX-XXX-XXX"
-                }
-            }
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up iXmanager",
+        "description": "Configure your iXmanager wallbox integration",
+        "data": {
+          "api_key": "API Key",
+          "serial_number": "Serial Number (Controller ID)",
+          "name": "Name",
+          "cable_type": "Charging Cable Type"
         },
-        "error": {
-            "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
-            "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
-            "unknown": "[%key:common::config_flow::error::unknown%]"
-        },
-        "abort": {
-            "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
+        "data_description": {
+          "api_key": "Your iXmanager API key from account settings",
+          "serial_number": "Device serial number in format XXX-XXX-XXX",
+          "name": "Friendly name for this device",
+          "cable_type": "Select your charging cable's maximum current rating"
         }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate iXmanager",
+        "description": "Enter your API key to re-authenticate",
+        "data": {
+          "api_key": "API Key"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
+      "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
+      "unknown": "[%key:common::config_flow::error::unknown%]"
+    },
+    "abort": {
+      "already_configured": "[%key:common::config_flow::abort::already_configured_device%]",
+      "reauth_successful": "Re-authentication was successful"
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Configure Cable Type",
+        "description": "Update your charging cable type to ensure proper current limits",
+        "data": {
+          "cable_type": "Charging Cable Type"
+        },
+        "data_description": {
+          "cable_type": "Select your charging cable's maximum current rating"
+        }
+      }
+    }
+  },
+  "selector": {
+    "cable_type": {
+      "options": {
+        "16A": "Type 2 Cable (16A Max) - Standard charging cable",
+        "32A": "Type 2 Cable (32A Max) - High power charging cable"
+      }
+    }
+  }
 }

@@ -1,9 +1,10 @@
 {
   "domain": "ixmanager",
   "name": "iXmanager Integration",
-  "version": "1.0.0",
-  "requirements": [],
+  "version": "2.0.0",
+  "requirements": ["aiohttp>=3.8.0"],
   "dependencies": [],
-  "codeowners": ["your_github_username"],
-  "config_flow": true
+  "codeowners": [],
+  "config_flow": true,
+  "iot_class": "cloud_polling"
 }
