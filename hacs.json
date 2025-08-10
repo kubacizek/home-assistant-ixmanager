@@ -1,6 +1,8 @@
 {
-  "name": "iXmanager Integration (experimental)",
+  "name": "iXmanager Integration",
+  "render_readme": true,
   "country": "CZ",
-  "domains": ["number", "switch", "sensor"],
-  "homeassistant": "2024.2.1"
+  "domains": ["number", "sensor", "switch"],
+  "iot_class": "cloud_polling",
+  "homeassistant": "2024.2.0"
 }
