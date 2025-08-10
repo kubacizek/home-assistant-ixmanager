@@ -21,12 +21,16 @@ from . import IXManagerConfigEntry
 from .const import (
     CONF_SERIAL_NUMBER,
     DOMAIN,
+    PROPERTY_CHARGING_CURRENT,
+    PROPERTY_CHARGING_CURRENT_L2,
+    PROPERTY_CHARGING_CURRENT_L3,
     PROPERTY_CHARGING_ENABLE,
     PROPERTY_CHARGING_STATUS,
     PROPERTY_CURRENT_CHARGING_POWER,
     PROPERTY_MAXIMUM_CURRENT,
     PROPERTY_SIGNAL,
     PROPERTY_SINGLE_PHASE,
+    PROPERTY_TARGET_CURRENT,
     PROPERTY_TOTAL_ENERGY,
 )
 from .coordinator import IXManagerDataUpdateCoordinator
@@ -51,7 +55,11 @@ async def async_setup_entry(
     entities: list[IXManagerSensorBase] = [
         IXManagerChargingEnableSensor(coordinator, entry),
         IXManagerMaximumCurrentSensor(coordinator, entry),
+        IXManagerTargetCurrentSensor(coordinator, entry),
         IXManagerCurrentChargingPowerSensor(coordinator, entry),
+        IXManagerChargingCurrentL1Sensor(coordinator, entry),
+        IXManagerChargingCurrentL2Sensor(coordinator, entry),
+        IXManagerChargingCurrentL3Sensor(coordinator, entry),
         IXManagerTotalEnergySensor(coordinator, entry),
         IXManagerSinglePhaseSensor(coordinator, entry),
         IXManagerSignalStrengthSensor(coordinator, entry),
@@ -180,6 +188,32 @@ class IXManagerMaximumCurrentSensor(IXManagerSensorBase):
         return None
 
 
+class IXManagerTargetCurrentSensor(IXManagerSensorBase):
+    """Sensor for target current setting."""
+
+    _attr_name = "Target Current"
+    _attr_native_unit_of_measurement = UnitOfElectricCurrent.AMPERE
+    _attr_device_class = SensorDeviceClass.CURRENT
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_icon = "mdi:ev-plug-type2"
+
+    @property
+    def _property_key(self) -> str:
+        """Return the property key for this sensor."""
+        return PROPERTY_TARGET_CURRENT
+
+    @property
+    def native_value(self) -> int | None:
+        """Return the state of the sensor."""
+        value = super().native_value
+        if value is not None:
+            try:
+                return int(value)
+            except (ValueError, TypeError):
+                _LOGGER.warning("Invalid target current value: %s", value)
+        return None
+
+
 class IXManagerCurrentChargingPowerSensor(IXManagerSensorBase):
     """Sensor for current charging power."""
 
@@ -203,6 +237,84 @@ class IXManagerCurrentChargingPowerSensor(IXManagerSensorBase):
                 return int(value)
             except (ValueError, TypeError):
                 _LOGGER.warning("Invalid charging power value: %s", value)
+        return None
+
+
+class IXManagerChargingCurrentL1Sensor(IXManagerSensorBase):
+    """Sensor for charging current L1 (phase 1)."""
+
+    _attr_name = "Charging Current L1"
+    _attr_native_unit_of_measurement = UnitOfElectricCurrent.AMPERE
+    _attr_device_class = SensorDeviceClass.CURRENT
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_icon = "mdi:current-ac"
+
+    @property
+    def _property_key(self) -> str:
+        """Return the property key for this sensor."""
+        return PROPERTY_CHARGING_CURRENT
+
+    @property
+    def native_value(self) -> float | None:
+        """Return the state of the sensor rounded to 2 decimal places."""
+        value = super().native_value
+        if value is not None:
+            try:
+                return round(float(value), 2)
+            except (ValueError, TypeError):
+                _LOGGER.warning("Invalid charging current L1 value: %s", value)
+        return None
+
+
+class IXManagerChargingCurrentL2Sensor(IXManagerSensorBase):
+    """Sensor for charging current L2 (phase 2)."""
+
+    _attr_name = "Charging Current L2"
+    _attr_native_unit_of_measurement = UnitOfElectricCurrent.AMPERE
+    _attr_device_class = SensorDeviceClass.CURRENT
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_icon = "mdi:current-ac"
+
+    @property
+    def _property_key(self) -> str:
+        """Return the property key for this sensor."""
+        return PROPERTY_CHARGING_CURRENT_L2
+
+    @property
+    def native_value(self) -> float | None:
+        """Return the state of the sensor rounded to 2 decimal places."""
+        value = super().native_value
+        if value is not None:
+            try:
+                return round(float(value), 2)
+            except (ValueError, TypeError):
+                _LOGGER.warning("Invalid charging current L2 value: %s", value)
+        return None
+
+
+class IXManagerChargingCurrentL3Sensor(IXManagerSensorBase):
+    """Sensor for charging current L3 (phase 3)."""
+
+    _attr_name = "Charging Current L3"
+    _attr_native_unit_of_measurement = UnitOfElectricCurrent.AMPERE
+    _attr_device_class = SensorDeviceClass.CURRENT
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_icon = "mdi:current-ac"
+
+    @property
+    def _property_key(self) -> str:
+        """Return the property key for this sensor."""
+        return PROPERTY_CHARGING_CURRENT_L3
+
+    @property
+    def native_value(self) -> float | None:
+        """Return the state of the sensor rounded to 2 decimal places."""
+        value = super().native_value
+        if value is not None:
+            try:
+                return round(float(value), 2)
+            except (ValueError, TypeError):
+                _LOGGER.warning("Invalid charging current L3 value: %s", value)
         return None
 
 

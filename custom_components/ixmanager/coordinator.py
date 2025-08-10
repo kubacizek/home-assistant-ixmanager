@@ -11,12 +11,16 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from .api_client import IXManagerApiClient
 from .const import (
     DOMAIN,
+    PROPERTY_CHARGING_CURRENT,
+    PROPERTY_CHARGING_CURRENT_L2,
+    PROPERTY_CHARGING_CURRENT_L3,
     PROPERTY_CHARGING_ENABLE,
     PROPERTY_CHARGING_STATUS,
     PROPERTY_CURRENT_CHARGING_POWER,
     PROPERTY_MAXIMUM_CURRENT,
     PROPERTY_SIGNAL,
     PROPERTY_SINGLE_PHASE,
+    PROPERTY_TARGET_CURRENT,
     PROPERTY_TOTAL_ENERGY,
     UPDATE_INTERVAL,
 )
@@ -60,7 +64,11 @@ class IXManagerDataUpdateCoordinator(DataUpdateCoordinator[dict[str, Any]]):
             properties_to_fetch = [
                 PROPERTY_CHARGING_ENABLE,
                 PROPERTY_MAXIMUM_CURRENT,
+                PROPERTY_TARGET_CURRENT,
                 PROPERTY_CURRENT_CHARGING_POWER,
+                PROPERTY_CHARGING_CURRENT,
+                PROPERTY_CHARGING_CURRENT_L2,
+                PROPERTY_CHARGING_CURRENT_L3,
                 PROPERTY_TOTAL_ENERGY,
                 PROPERTY_SINGLE_PHASE,
                 PROPERTY_SIGNAL,

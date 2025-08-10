@@ -25,6 +25,10 @@ PROPERTY_TOTAL_ENERGY: Final = "totalEnergy"
 PROPERTY_SINGLE_PHASE: Final = "singlePhase"
 PROPERTY_SIGNAL: Final = "signal"
 PROPERTY_CHARGING_STATUS: Final = "chargingStatus"
+PROPERTY_TARGET_CURRENT: Final = "targetCurrent"
+PROPERTY_CHARGING_CURRENT: Final = "chargingCurrent"
+PROPERTY_CHARGING_CURRENT_L2: Final = "chargingCurrentL2"
+PROPERTY_CHARGING_CURRENT_L3: Final = "chargingCurrentL3"
 
 # Cable types and specifications
 CABLE_TYPE_16A: Final = "16A"
