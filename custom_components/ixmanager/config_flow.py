@@ -1,4 +1,5 @@
 """Config flow for iXmanager integration."""
+
 from __future__ import annotations
 
 import logging
@@ -7,21 +8,20 @@ from typing import Any
 import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_NAME
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
+from homeassistant.core import callback
 from homeassistant.data_entry_flow import FlowResult
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api_client import IXManagerApiClient
-from .const import (
-    CABLE_TYPES,
-    CONF_API_KEY,
-    CONF_CABLE_TYPE,
-    CONF_SERIAL_NUMBER,
-    DEFAULT_CABLE_TYPE,
-    DEFAULT_NAME,
-    DOMAIN,
-)
-from .exceptions import IXManagerAuthenticationError, IXManagerConnectionError
+from .const import CABLE_TYPES
+from .const import CONF_API_KEY
+from .const import CONF_CABLE_TYPE
+from .const import CONF_SERIAL_NUMBER
+from .const import DEFAULT_CABLE_TYPE
+from .const import DEFAULT_NAME
+from .const import DOMAIN
+from .exceptions import IXManagerAuthenticationError
+from .exceptions import IXManagerConnectionError
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -37,21 +37,19 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 
 async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
     """Validate the user input allows us to connect.
-    
+
     Args:
         hass: Home Assistant instance
         data: User input data
-        
+
     Returns:
         Dictionary with connection info
-        
+
     Raises:
         IXManagerConnectionError: If we cannot connect
         IXManagerAuthenticationError: If credentials are invalid
     """
-    api_client = IXManagerApiClient(
-        hass, data[CONF_API_KEY], data[CONF_SERIAL_NUMBER]
-    )
+    api_client = IXManagerApiClient(hass, data[CONF_API_KEY], data[CONF_SERIAL_NUMBER])
 
     # Test the connection
     await api_client.async_validate_connection()
@@ -74,10 +72,10 @@ class IXManagerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Handle the initial step.
-        
+
         Args:
             user_input: User provided configuration
-            
+
         Returns:
             Flow result
         """
@@ -109,14 +107,12 @@ class IXManagerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             errors=errors,
         )
 
-    async def async_step_reauth(
-        self, entry_data: dict[str, Any]
-    ) -> FlowResult:
+    async def async_step_reauth(self, entry_data: dict[str, Any]) -> FlowResult:
         """Handle reauth flow.
-        
+
         Args:
             entry_data: Existing entry data
-            
+
         Returns:
             Flow result
         """
@@ -126,10 +122,10 @@ class IXManagerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Handle reauth confirm step.
-        
+
         Args:
             user_input: User provided configuration
-            
+
         Returns:
             Flow result
         """
@@ -142,7 +138,9 @@ class IXManagerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 CONF_API_KEY: user_input[CONF_API_KEY],
                 CONF_SERIAL_NUMBER: reauth_entry.data[CONF_SERIAL_NUMBER],
                 CONF_NAME: reauth_entry.data.get(CONF_NAME, DEFAULT_NAME),
-                CONF_CABLE_TYPE: reauth_entry.data.get(CONF_CABLE_TYPE, DEFAULT_CABLE_TYPE),
+                CONF_CABLE_TYPE: reauth_entry.data.get(
+                    CONF_CABLE_TYPE, DEFAULT_CABLE_TYPE
+                ),
             }
 
             try:
@@ -172,10 +170,10 @@ class IXManagerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         config_entry: config_entries.ConfigEntry,
     ) -> config_entries.OptionsFlow:
         """Create the options flow.
-        
+
         Args:
             config_entry: Config entry to create options for
-            
+
         Returns:
             Options flow instance
         """
@@ -187,7 +185,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
 
     def __init__(self, config_entry: config_entries.ConfigEntry) -> None:
         """Initialize options flow.
-        
+
         Args:
             config_entry: Config entry for this options flow
         """
@@ -197,10 +195,10 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         self, user_input: dict[str, Any] | None = None
     ) -> FlowResult:
         """Handle the initial options step.
-        
+
         Args:
             user_input: User provided options
-            
+
         Returns:
             Flow result
         """
@@ -208,22 +206,25 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
             # Update the config entry with new cable type
             new_data = dict(self.config_entry.data)
             new_data[CONF_CABLE_TYPE] = user_input[CONF_CABLE_TYPE]
-            
+
             self.hass.config_entries.async_update_entry(
                 self.config_entry,
                 data=new_data,
             )
-            
+
             return self.async_create_entry(title="", data={})
 
-        current_cable_type = self.config_entry.data.get(CONF_CABLE_TYPE, DEFAULT_CABLE_TYPE)
-        
+        current_cable_type = self.config_entry.data.get(
+            CONF_CABLE_TYPE, DEFAULT_CABLE_TYPE
+        )
+
         return self.async_show_form(
             step_id="init",
-            data_schema=vol.Schema({
-                vol.Required(
-                    CONF_CABLE_TYPE,
-                    default=current_cable_type
-                ): vol.In(CABLE_TYPES),
-            }),
+            data_schema=vol.Schema(
+                {
+                    vol.Required(CONF_CABLE_TYPE, default=current_cable_type): vol.In(
+                        CABLE_TYPES
+                    ),
+                }
+            ),
         )

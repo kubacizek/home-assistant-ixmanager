@@ -1,4 +1,5 @@
 """Constants for the iXmanager integration."""
+
 from __future__ import annotations
 
 from datetime import timedelta
@@ -38,13 +39,13 @@ CABLE_TYPES: Final = {
     CABLE_TYPE_16A: {
         "name": "Type 2 Cable (16A Max)",
         "max_current": 16,
-        "description": "Standard charging cable, maximum 16A"
+        "description": "Standard charging cable, maximum 16A",
     },
     CABLE_TYPE_32A: {
-        "name": "Type 2 Cable (32A Max)", 
+        "name": "Type 2 Cable (32A Max)",
         "max_current": 32,
-        "description": "High power charging cable, maximum 32A"
-    }
+        "description": "High power charging cable, maximum 32A",
+    },
 }
 
 # Default values

@@ -1,38 +1,38 @@
 """Sensor platform for iXmanager integration."""
+
 from __future__ import annotations
 
 import logging
 from typing import Any
 
-from homeassistant.components.sensor import (
-    SensorDeviceClass,
-    SensorEntity,
-    SensorStateClass,
-)
-from homeassistant.helpers.entity import EntityCategory
+from homeassistant.components.sensor import SensorDeviceClass
+from homeassistant.components.sensor import SensorEntity
+from homeassistant.components.sensor import SensorStateClass
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import PERCENTAGE, UnitOfElectricCurrent, UnitOfEnergy, UnitOfPower
+from homeassistant.const import PERCENTAGE
+from homeassistant.const import UnitOfElectricCurrent
+from homeassistant.const import UnitOfEnergy
+from homeassistant.const import UnitOfPower
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from . import IXManagerConfigEntry
-from .const import (
-    CONF_SERIAL_NUMBER,
-    DOMAIN,
-    PROPERTY_CHARGING_CURRENT,
-    PROPERTY_CHARGING_CURRENT_L2,
-    PROPERTY_CHARGING_CURRENT_L3,
-    PROPERTY_CHARGING_ENABLE,
-    PROPERTY_CHARGING_STATUS,
-    PROPERTY_CURRENT_CHARGING_POWER,
-    PROPERTY_MAXIMUM_CURRENT,
-    PROPERTY_SIGNAL,
-    PROPERTY_SINGLE_PHASE,
-    PROPERTY_TARGET_CURRENT,
-    PROPERTY_TOTAL_ENERGY,
-)
+from .const import CONF_SERIAL_NUMBER
+from .const import DOMAIN
+from .const import PROPERTY_CHARGING_CURRENT
+from .const import PROPERTY_CHARGING_CURRENT_L2
+from .const import PROPERTY_CHARGING_CURRENT_L3
+from .const import PROPERTY_CHARGING_ENABLE
+from .const import PROPERTY_CHARGING_STATUS
+from .const import PROPERTY_CURRENT_CHARGING_POWER
+from .const import PROPERTY_MAXIMUM_CURRENT
+from .const import PROPERTY_SIGNAL
+from .const import PROPERTY_SINGLE_PHASE
+from .const import PROPERTY_TARGET_CURRENT
+from .const import PROPERTY_TOTAL_ENERGY
 from .coordinator import IXManagerDataUpdateCoordinator
 
 _LOGGER = logging.getLogger(__name__)
@@ -44,7 +44,7 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     """Set up iXmanager sensor entities.
-    
+
     Args:
         hass: Home Assistant instance
         entry: Config entry
@@ -69,7 +69,9 @@ async def async_setup_entry(
     async_add_entities(entities)
 
 
-class IXManagerSensorBase(CoordinatorEntity[IXManagerDataUpdateCoordinator], SensorEntity):
+class IXManagerSensorBase(
+    CoordinatorEntity[IXManagerDataUpdateCoordinator], SensorEntity
+):
     """Base class for iXmanager sensors."""
 
     _attr_has_entity_name = True
@@ -80,7 +82,7 @@ class IXManagerSensorBase(CoordinatorEntity[IXManagerDataUpdateCoordinator], Sen
         entry: ConfigEntry,
     ) -> None:
         """Initialize the sensor.
-        
+
         Args:
             coordinator: Data update coordinator
             entry: Config entry
@@ -99,7 +101,7 @@ class IXManagerSensorBase(CoordinatorEntity[IXManagerDataUpdateCoordinator], Sen
     @property
     def available(self) -> bool:
         """Return if entity is available.
-        
+
         Returns:
             True if coordinator has data and is available
         """
@@ -113,7 +115,7 @@ class IXManagerSensorBase(CoordinatorEntity[IXManagerDataUpdateCoordinator], Sen
     @property
     def _property_key(self) -> str:
         """Return the property key for this sensor.
-        
+
         Returns:
             Property key string
         """
@@ -122,13 +124,13 @@ class IXManagerSensorBase(CoordinatorEntity[IXManagerDataUpdateCoordinator], Sen
     @property
     def native_value(self) -> Any:
         """Return the state of the sensor.
-        
+
         Returns:
             Sensor value or None if not available
         """
         if not self.available:
             return None
-            
+
         property_data = self.coordinator.data.get(self._property_key)
         if property_data is not None:
             # Handle both dict format {'value': X} and direct value format
@@ -423,7 +425,7 @@ class IXManagerChargingStatusSensor(IXManagerSensorBase):
         value = self.native_value
         if value is None:
             return None
-            
+
         # Map charging status to descriptions
         status_descriptions = {
             "INIT": "Initialization state",
@@ -432,10 +434,10 @@ class IXManagerChargingStatusSensor(IXManagerSensorBase):
             "CHARGING": "SAE J1772 Status C - Vehicle charging",
             "CHARGING_WITH_VENTILATION": "SAE J1772 Status D - Vehicle charging with ventilation",
             "CONTROL_PILOT_ERROR": "SAE J1772 Status E - Control pilot error",
-            "ERROR": "SAE J1772 Status F - Error state"
+            "ERROR": "SAE J1772 Status F - Error state",
         }
-        
+
         return {
             "description": status_descriptions.get(value, f"Unknown status: {value}"),
-            "sae_j1772_standard": "https://en.wikipedia.org/wiki/SAE_J1772"
+            "sae_j1772_standard": "https://en.wikipedia.org/wiki/SAE_J1772",
         }

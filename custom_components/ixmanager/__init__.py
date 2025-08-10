@@ -1,39 +1,43 @@
 """The iXmanager integration."""
+
 from __future__ import annotations
 
 import logging
 from typing import TYPE_CHECKING
 
+try:
+    from typing import TypeAlias  # Python 3.10+
+except ImportError:
+    from typing_extensions import TypeAlias  # Python 3.9
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
-from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api_client import IXManagerApiClient
-from .const import (
-    CONF_API_KEY,
-    CONF_SERIAL_NUMBER,
-    DOMAIN,
-    PLATFORMS,
-)
+from .const import CONF_API_KEY
+from .const import CONF_SERIAL_NUMBER
+from .const import DOMAIN
+from .const import PLATFORMS
 from .coordinator import IXManagerDataUpdateCoordinator
-from .exceptions import IXManagerConnectionError, IXManagerError
+from .exceptions import IXManagerConnectionError
+from .exceptions import IXManagerError
 
 if TYPE_CHECKING:
     from homeassistant.helpers.typing import ConfigType
 
 _LOGGER = logging.getLogger(__name__)
 
-type IXManagerConfigEntry = ConfigEntry[IXManagerDataUpdateCoordinator]
+IXManagerConfigEntry: TypeAlias = ConfigEntry[IXManagerDataUpdateCoordinator]
 
 
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     """Set up the iXmanager integration.
-    
+
     Args:
         hass: Home Assistant instance
         config: Integration configuration
-        
+
     Returns:
         True if setup was successful
     """
@@ -43,14 +47,14 @@ async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, entry: IXManagerConfigEntry) -> bool:
     """Set up iXmanager from a config entry.
-    
+
     Args:
         hass: Home Assistant instance
         entry: Config entry to set up
-        
+
     Returns:
         True if setup was successful
-        
+
     Raises:
         ConfigEntryNotReady: If setup fails due to connection issues
     """
@@ -87,11 +91,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: IXManagerConfigEntry) ->
 
 async def async_unload_entry(hass: HomeAssistant, entry: IXManagerConfigEntry) -> bool:
     """Unload a config entry.
-    
+
     Args:
         hass: Home Assistant instance
         entry: Config entry to unload
-        
+
     Returns:
         True if unload was successful
     """
@@ -100,7 +104,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: IXManagerConfigEntry) -
 
 async def async_reload_entry(hass: HomeAssistant, entry: IXManagerConfigEntry) -> None:
     """Reload config entry.
-    
+
     Args:
         hass: Home Assistant instance
         entry: Config entry to reload
