@@ -1,0 +1,100 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+.eggs/
+build/
+dist/
+develop-eggs/
+.installed.cfg
+*.manifest
+*.spec
+
+# Home Assistant runtime data
+home-assistant.log
+home-assistant.log.*
+*.db
+*.db-shm
+*.db-wal
+.storage/
+deps/
+*.yaml.save
+*.yaml.backup
+
+# Secrets
+secrets.yaml
+secrets_*.yaml
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+.env
+.env.*
+
+# Testing & coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+.cache/
+nosetests.xml
+coverage.xml
+pytestdebug.log
+
+# Type checking / analysis
+.pyright/
+.pyre/
+.typings/
+
+# Lint / formatting caches
+.pre-commit-config.yaml.*
+.pre-commit-cache/
+
+# IDE / Editors
+.vscode/
+.idea/
+*.iml
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node / frontend (if used for panel dev)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp.*
+.pnpm-debug.log*
+
+# Package managers
+pip-wheel-metadata/
+pip-log.txt
+poetry.lock
+pdm.lock
+
+# Logs / temp
+*.log
+*.tmp
+*.swp
+*~
+
+# Generated translation artifacts
+translations/*.cache.json
+
+# Misc
+*.orig
+
+
+# Claude specific files
+CLAUDE.md
