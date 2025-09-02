@@ -6,6 +6,8 @@
 
 This integration provides support for the [R-EVC Wallbox EcoVolter](https://r-evc.com/index.php?route=product/product&path=60&product_id=135), utilizing the iXmanager [API](https://evcharger.ixcommand.com).
 
+**Only EcoVolter (1st generation) is supported by this integration.** If you have 2nd generation, you can use [EcoVolter Home Assistant Integration](https://github.com/samuelg0rd0n/ha-ecovolter-integration).
+
 ## Features
 - Seamless integration with the R-EVC Wallbox EcoVolter charger.
 - Control and monitor your wallbox through Home Assistant.
